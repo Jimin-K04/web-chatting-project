@@ -58,11 +58,18 @@ function MessageHeader({handleSearchChange}) {
         }
     }
 
-    const renderUserPosts = (userPosts) => {//object 는 모든 객체들을 반환 , ket 에는 user 이름이, value 에는 이미지와 count 가 들어감감
+    const renderUserPosts = (userPosts) => {//object 는 모든 객체들을 반환 , ket 에는 user 이름이, value 에는 이미지와 count 가 들어감
+        if (!userPosts || Object.keys(userPosts).length === 0) {
+            return <p style={{ textAlign: 'center', color: '#999', fontSize: '14px', margin: 0}}>No Chatting</p>;
+        }
         return Object.entries(userPosts)
             .sort((a,b) => b[1].count - a[1].count) //count 를 기준으로 내림차순으로 정렬렬
             .map(([key, val], i) => ( //인덱스와 값을 반환환
-                <div key={i} style={{display:'flex'}}>
+                <div key={i} 
+                style={{display:'flex',
+                    borderBottom: '1px solid #eee',
+                    marginBottom: 10
+                }}>
                     <Image
                         style={{width: 45, height: 45, marginRight: 10}}
                         roundedCircle
@@ -70,8 +77,8 @@ function MessageHeader({handleSearchChange}) {
                         alt={key}
                     />
                     <div>
-                        <h6>{key}</h6>
-                        <p>
+                        <h6 style={{margin:0}}>{key}</h6>
+                        <p style={{margin: 5}}>
                             {val.count} 개
                         </p>
                     </div>
@@ -104,7 +111,7 @@ function MessageHeader({handleSearchChange}) {
                 {!isPrivateChatRoom &&
                 <span style={{cursor: 'pointer'}} onClick={handleFavorite}>
                     {isFavorite 
-                    ? <MdFavorite style={{ marginBottom: 10}}/>
+                    ? <MdFavorite style={{ marginBottom: 10, color: 'red'}}/>
                     :<MdFavoriteBorder style={{marginBottom : 10}}/>
                 }
                 </span>
@@ -125,12 +132,21 @@ function MessageHeader({handleSearchChange}) {
         </Row>
 
         {!isPrivateChatRoom && <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+            <p  style={{
+                    fontSize: '13px', 
+                    fontWeight: 'lighter', 
+                    color: '#333',
+                    marginRight: 10,
+                    marginTop: 10,
+                    marginBottom: 0
+                }}
+            >채팅방 생성자</p>
             <Image
                 roundedCircle
                 src = {currentChatRoom?.createdBy.image || null}
-                style = {{width:30, height:30, marginRight: 7}}
+                style = {{width:30, height:30, marginRight: 5}}
             />{" "}
-            <p>{currentChatRoom?.createdBy.name}</p>
+            <p style={{marginTop: 2, marginRight:4}}>{currentChatRoom?.createdBy.name}</p>
         </div>
         }
 
@@ -140,8 +156,8 @@ function MessageHeader({handleSearchChange}) {
                 <Accordion.Item eventKey='0'>
                     <Accordion.Header>Description</Accordion.Header>
                     <Accordion.Collapse eventKey='0'>
-                        <Accordion.Body>
-                            {currentChatRoom?.description}
+                        <Accordion.Body style={{ position: "relative", zIndex: 2000 }}>
+                            { !isPrivateChatRoom ? currentChatRoom?.description : <>Chatting with <span style={{ color: '#8A90F0', fontWeight: 'bold' }}>{currentChatRoom.name}</span></> }
                         </Accordion.Body>
                     </Accordion.Collapse>
                 </Accordion.Item>

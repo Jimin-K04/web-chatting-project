@@ -1,0 +1,79 @@
+/* 텍스트 입력창 스타일 */
+.message-textarea {
+    width: 100%;
+    height: 90px;
+    border: 2px solid #e0e0e0; /* 연한 회색 테두리 */
+    border-radius: 12px; /* 둥근 스타일 */
+    padding: 12px 15px;
+    font-size: 16px;
+    font-weight: 400;
+    resize: none;
+    outline: none;
+    box-shadow: inset 2px 2px 5px rgba(47, 0, 255, 0.05); /* 내부 그림자 */
+    transition: all 0.3s ease-in-out;
+}
+
+/* 포커스(클릭 시) 효과 */
+.message-textarea:focus {
+    border: 3px solid  #B3B8F7; /* 포커스 시 보더 색상 변경 */
+    background: white;
+    box-shadow: 0px 4px 8px rgba(122, 132, 235, 0.2);
+    transform: scale(1.0); /* 약간 확대 효과 */
+}
+
+/* placeholder 스타일 변경 */
+.message-textarea::placeholder {
+    color: #b0b0b0;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+@keyframes typingEffect {
+    0% { box-shadow: 0px 0px 5px rgba(122, 132, 235, 0.1); }
+    50% { box-shadow: 0px 0px 10px rgba(122, 132, 235, 0.2); }
+    100% { box-shadow: 0px 0px 5px rgba(122, 132, 235, 0.1); }
+}
+
+.message-textarea:focus {
+    animation: typingEffect 1s infinite alternate;
+}
+
+
+/* ======= 버튼 스타일 개선 ======= */
+.message-form-button {
+    color: white;
+    border: none;
+    border-radius: 30px; /* 둥글고 귀엽게 */
+    padding: 14px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 10px rgba(122, 132, 235, 0.3); /* 그림자 효과 */
+}
+
+/* 버튼 호버 & 클릭 효과 */
+.message-form-button:hover {
+    background: linear-gradient(135deg, #636ee6, #908cde);
+    transform: translateY(-1.5px); /* 살짝 떠오르는 효과 */
+    box-shadow: 0px 6px 14px rgba(122, 132, 235, 0.4);
+}
+
+.message-form-button:active {
+    transform: scale(0.99); /* 클릭 시 살짝 눌리는 효과 */
+    box-shadow: 0px 2px 6px rgba(122, 132, 235, 0.3);
+}
+
+/* ======= 퍼센트 바 (업로드 진행률) ======= */
+.upload-progress-bar {
+    height: 12px; /* 높이 조정 */
+    border-radius: 10px; /* 둥글게 */
+    background-color: #e0e0e0; /* 배경 색상 */
+}
+
+.upload-progress-bar .progress-bar {
+    height: 100%;
+    background: linear-gradient(#f6915f, #ee783d, #f57048); /* 연보라 그라데이션 */
+    transition: width 0.9s ease-in-out;
+}

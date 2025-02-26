@@ -10,6 +10,8 @@ function ChatRooms() {
     const [show, setShow] = useState(false); //state 생성, true 일때만 modal 보여줌
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
+    const [editRoom, setEditRoom] = useState(null);
+    const [showEditModal, setShowEditModal] = useState(false);
 
     const chatRoomsRef = dbRef(db, "chatRooms");
     const [chatRooms, setChatRooms] = useState([]); //여러 chatroom 에 대한 배열을 넣어줘야함
@@ -102,28 +104,62 @@ function ChatRooms() {
         return chatRooms.length > 0 &&
             chatRooms.map(room => (
                 <li 
+                    //onMouseDown={handleLeftClick}
                     key = {room.id}
                     onClick={() => changeChatRoom(room)}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#ffffff45'} // 마우스 오버 시 색 변경
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = room.id === activeChatRoomId ? '#ffffff45' : ''}
                     style={{
-                        backgroundColor: room.id === activeChatRoomId ? '#ffffff45' : ''
-                    }}
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "8px 7px",
+                        marginBottom: "7px",
+                        borderRadius: "10px",
+                        transition: "background 0.1s ease-in-out",
+                        cursor: "pointer",
+                        fontSize: "14px",
+                        fontWeight: "bold",
+                        backgroundColor: room.id === activeChatRoomId ? "#7a84eb" : "",
+                        boxShadow: room.id === activeChatRoomId ? "0 2px 6px rgba(122, 132, 235, 0.3)" : "none"
+                      }}
                 >
                     # {room.name}
                 </li>
             ))
     }
 
+    // //오른쪽 버튼 클릭시 해당 채팅방 정보 불러오기기
+    // const handleEditClick = (room) => {
+    //     setEditRoom(room);
+    //     setShowEditModal(true);
+    // }
+    // //입력값을 받아서 변경처리
+    // const handleInputChange = (e) => {
+    //     setEditRoom({...editRoom, [e.target.name] : e.target.value})
+    // }
+
+    // const handleSaveChanges = async() => {
+    //     if (!editRoom.name || !editRoom.description) return;
+
+    //     try{
+    //         await update(child(dbRef(db, "chatRooms"), editRoom.id))
+    //     }
+    // }
+
 
     return (
-        <div>
+        <div style={{marginBottom: 60}}>
             <div style={{
                 position: 'relative',
                 width: '100%',
                 display: 'flex',
-                alignItems: 'center'
+                alignItems: 'center',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                marginBottom: 10
             }}>
             
-                <FaRegSmileWink style={{marginRight: 3}}/>
+                <FaRegSmileWink style={{marginRight: 5}}/>
                 CHAT ROOMS {" "}
 
                 {/* 클릭하면 state 가 true 로 변한다 */}
@@ -143,7 +179,7 @@ function ChatRooms() {
                 </Modal.Header>
                 <Modal.Body>
                     <Form> 
-                        <Form.Group>
+                        <Form.Group style={{marginBottom: 13}}>
                             <Form.Label>방 이름</Form.Label>
                             <Form.Control
                                  value = {name}
@@ -174,6 +210,45 @@ function ChatRooms() {
                     </Button>
                 </Modal.Footer>
             </Modal>
+
+            {/* //채팅방 수정
+            <Modal show={show} onHide={() => setShow(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>채팅 방 수정</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form> 
+                        <Form.Group style={{marginBottom: 13}}>
+                            <Form.Label>방 이름</Form.Label>
+                            <Form.Control
+                                 value = {name}
+                                 onChange={(e) => setName(e.target.value)} //이벤트함수로 작성할때마다 state 업데이트
+                                 type='text'
+                                 placeholder='채팅 방 이름을 입력하세요.'
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>방 설명</Form.Label>
+                            <Form.Control
+                                 value={description}
+                                 onChange={(e) => setDescription(e.target.value)} //이벤트함수로 작성할때마다 state 업데이트
+                                 type='text'
+                                 placeholder='채팅 방 설명을 입력하세요.'
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+
+                <Modal.Footer>
+                    setShow 의 값을 false 로 바꿔서 모달 안보이게 하기기 
+                    <Button variant='secondary' onClick={() => setShow(false)}> 
+                        취소
+                    </Button>
+                    <Button variant='primary' onClick={handleSubmit}>
+                        생성
+                    </Button>
+                </Modal.Footer>
+            </Modal> */}
         </div>
     )
 }

@@ -108,7 +108,7 @@
 .auth-wrapper button[type="submit"],
 .auth-wrapper input[type="button"],
 .auth-wrapper input[type="submit"] {
-  -webkit-appearance: none;
+  appearance: none;
 }
 
 .auth-wrapper button[type="button"] {

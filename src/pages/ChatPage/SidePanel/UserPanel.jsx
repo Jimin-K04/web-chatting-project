@@ -17,6 +17,7 @@ function UserPanel() {
     //state 가 변경되면 component 가 렌더링 되지만 ref 가 변경되면 렌더링 되지 않는다
     const inputOpenImageRef = useRef(null); //ref.current === null 이 할당됨
 
+
     //로그아웃 버튼
     const handleLogout = () => {
         signOut(auth) //firebse 함수 사용
@@ -105,32 +106,62 @@ function UserPanel() {
 
     return (
 
-        <div>
+        <div style={{
+            marginBottom: "30px",
+            padding: "25px 30px 10px 20px",
+            borderRadius: "10px",
+            backgroundColor: "	#3F1D66"
+            }}>
+
             <h3 style = {{color: 'white'}}>
-                <IoIosChatboxes/>{" "} Chat App
+                <IoIosChatboxes />{" "} Chat App
             </h3>
 
-            <div style={{display: 'flex', marginBottom: '1rem'}}>
+            <div style={{
+                display: 'flex', marginBottom: '0.5rem', marginTop: '1rem'
+            }}>
             {/* bootstrap 이용 */}
                 <Image
-                src={currentUser.photoURL || null}
+                src={currentUser.photoURL}
                 roundedCircle
-                style ={{width:30, height:30, marginTop: 3}}
+                style ={{ width: "35px",
+                    height: "35px",
+                    marginRight: "5px",
+                    border: "2px solid white",
+                    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.2)"}}
                 />
 
                 <Dropdown>
                     <Dropdown.Toggle 
-                    style={{backgroundColor: 'transparent', border:0}}>
+                    style={{
+                            backgroundColor: "transparent",
+                            border: "none",
+                            fontSize: "16px",
+                            color: "white",
+                            padding: "5px 10px"
+                    }}>
                         {currentUser.displayName}
                     </Dropdown.Toggle>
 
-                    <Dropdown.Menu>
+                    <Dropdown.Menu 
+                    style={{
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 6px rgba(73, 29, 29, 0.3)"
+                }}>
                         {/* 프로필 사진 변경을 눌렀을때 input file 로 참조가 됨*/}
-                        <Dropdown.Item onClick= {handleOpenImageRef}>
+                        <Dropdown.Item onClick= {handleOpenImageRef}
+                        style={{paddingLeft: "15px", transition: "background 0.2s" }} >
                             프로필 사진 변경
                         </Dropdown.Item>
-                        <Dropdown.Item onClick={handleLogout}> 
+
+                        <Dropdown.Item onClick={handleLogout}
+                        style={{ paddingLeft: "15px", transition: "background 0.2s" }}> 
                             로그아웃
+                        </Dropdown.Item>
+
+                        <Dropdown.Item 
+                        style={{ paddingLeft: "15px", transition: "background 0.2s" }}> 
+                            이름변경
                         </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>

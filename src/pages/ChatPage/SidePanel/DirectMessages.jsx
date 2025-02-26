@@ -10,7 +10,6 @@ function DirectMessages() {
 
   const [users, setUsers] = useState([]);
   const [activeChatRoom, setActiveChatRoom] = useState("");
-
   const {currentUser} = useSelector(state => state.user)
   const dispatch = useDispatch();
 
@@ -25,7 +24,7 @@ function DirectMessages() {
   }, [currentUser?.uid])
   
 
-  //사용자가 추가될때마다 업데이트트
+  //사용자가 추가될때마다 업데이트
   const addUsersLisners = (currentUserId) => {
     let userArray = [];
 
@@ -59,25 +58,49 @@ function DirectMessages() {
     const chatRoomData = {
       id: chatRoomId,
       name: user.name,
+      
     }
 
     dispatch(setCurrentChatRoom(chatRoomData));
     dispatch(setPrivateChatRoom(true));
     setActiveChatRoom(user.uid);
-
   }
 
   //다리렉트 메세지 창 렌더링 함수
   const renderDirectMessages = users => {
     return users.length > 0 &&
         users.map(user => (
-          <li key = {user.uid}
+          <li 
+          key = {user.uid}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#ffffff45'} // 마우스 오버 시 색 변경
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = user.uid === activeChatRoom ? '#ffffff45' : ''}
           style={{
-            backgroundColor: user.uid === activeChatRoom ? "#ffffff45" : ""
+            display: "flex",
+            alignItems: "center",
+            padding: "8px 7px",
+            marginBottom: "7px",
+            borderRadius: "10px",
+            transition: "background 0.1s ease-in-out",
+            cursor: "pointer",
+            fontSize: "14px",
+            fontWeight: "bold",
+            backgroundColor: user.uid === activeChatRoom ? "#7a84eb" : "",
+            boxShadow: user.uid === activeChatRoom ? "0 2px 6px rgba(122, 132, 235, 0.3)" : "none"
           }}
           onClick={() => changeChatRoom(user)}
           >
-            # {user.name}
+            <img 
+                    src= {user.image} 
+                    alt="profile"
+                    style={{
+                        width: "30px",
+                        height: "30px",
+                        borderRadius: "50%",
+                        marginRight: "10px",
+                        border: user.uid === activeChatRoom ? "2px solid white" : "2px solid #ddd"
+                    }}
+                />
+            {user.name}
           </li>
         ))
   }
@@ -85,8 +108,9 @@ function DirectMessages() {
 
   return (
     <div>
-      <span style={{display: 'flex', alignItems: 'center'}}>
-        <FaRegSmile style={{ marginRight: 3}}/>
+      <span style={{display: 'flex', alignItems: 'center', marginBottom: '10px', fontSize: '16px',
+                fontWeight: 'bold',}}>
+        <FaRegSmile style={{ marginRight: 5}}/>
         DIRECT MESSAGES
       </span>
 

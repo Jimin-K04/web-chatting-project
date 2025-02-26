@@ -62,9 +62,21 @@ function Favorite() {
         favoriteChatRooms.map(chatRoom => (
           <li
             key={chatRoom.id}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#ffffff45'} // 마우스 오버 시 색 변경
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = chatRoom.id === activeChatRoomId ? '#ffffff45' : ''}
             onClick={() => changeChatRoom(chatRoom)}
             style={{
-                backgroundColor: chatRoom.id === activeChatRoomId ? '#ffffff45' : ''
+              display: "flex",
+              alignItems: "center",
+              padding: "8px 7px",
+              marginBottom: "7px",
+              borderRadius: "10px",
+              transition: "background 0.1s ease-in-out",
+              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: "bold",
+              backgroundColor: chatRoom.id === activeChatRoomId ? "#7a84eb" : "",
+              boxShadow: chatRoom.id === activeChatRoomId ? "0 2px 6px rgba(122, 132, 235, 0.3)" : "none"
             }}
           >
             # {chatRoom.name}
@@ -73,9 +85,10 @@ function Favorite() {
   }
 
   return (
-    <div>
-      <span style={{display: 'flex', alignItems : 'center'}}>
-        <FaRegSmileBeam style={{margin: 3}}/>
+    <div style={{marginBottom: 30}}>
+      <span style={{display: 'flex', alignItems : 'center', marginBottom: '10px', fontSize: '16px',
+                fontWeight: 'bold',}}>
+        <FaRegSmileBeam style={{marginRight: 5}}/>
         FAVORITE
       </span>
       <ul style={{listStyleType: 'none', padding: 0}}>

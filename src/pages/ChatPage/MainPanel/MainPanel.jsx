@@ -96,6 +96,7 @@ function MainPanel() {
     let messagesArray = [];
     //만약 채팅방의 대화가 없을시 일단 빈 배열을 넣고 시작한다다
     setMessages([])
+    dispatch(setUserPosts({})); // userPosts도 초기화
 
     //data 가 업데이트 될때마다 콜백 함수 호출
     onChildAdded(child(messagesRef, chatRoomId), DataSnapshot => {
@@ -121,11 +122,21 @@ function MainPanel() {
       }
       return acc;
     }, {})
-    dispatch(setUserPosts(userPosts)); //이미 정의 되어있음음
+    dispatch(setUserPosts(userPosts)); //이미 정의 되어있음
   }
 
   //메세지 보여주기 함수
   const renderMessages = (messages) => {
+    if (messages.length == 0) {
+      return <p style={
+        {display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%', // 채팅창의 중앙 정렬
+        color: 'gray',
+        fontSize: '16px',
+      }}>대화를 시작해 보세요!</p>
+    }
     return messages.length > 0 && messages.map((message) => (
       <Message
       key = {message.timestamp}

@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { db, storage } from '../../../firebase';
 import { child, push, serverTimestamp, set, ref as dbRef, remove} from 'firebase/database';
 import { useSelector } from 'react-redux';
 import { getDownloadURL, ref as strRef, uploadBytesResumable } from 'firebase/storage';
 import { ProgressBar } from 'react-bootstrap';
+import './MessageForm.css';
 
 function MessageForm() {
 
@@ -22,8 +23,8 @@ function MessageForm() {
         e.preventDefault();
         //메세지 요소가 없을 경우
         if (!content) {
-            //concat 는 push 와 다르게 기존 배열이 아닌 새로운 배열을 반환하여  react 를 업데이트 함, 불변성 유지
-            setErrors(prev => prev.concat("Type Contents First")); //상태 업데이트, 이전 error 배열인 prev에 새로운 메시지 추가.
+            
+            setErrors(["Type Contents First"]); // 기존 배열에 새로운 에러 추가
             return;
         }
         setLoading(true); //메세지 값이 있을 경우 로딩을 true 로 만들어서 전송 버튼을 못누르게 함.
@@ -34,13 +35,21 @@ function MessageForm() {
             setContent("");
             setErrors([]);
         } catch(error){
-            setErrors(prev => prev.concat(error.message));
+            setErrors([error.message]);
             setLoading(false);
-            setTimeout(() => {
-                setErrors([]);
-            }, 5000)
         }
     }
+    //5초후 에러메세지 자동 삭제
+    useEffect(() => {
+      if(errors.length > 0) {
+        const timer = setTimeout(() => {
+            setErrors([]);
+        }, 2000);
+
+        return () => clearTimeout(timer); //새로운 에러 발생할 때 기존 타이머 삭제
+      }
+    }, [errors])
+    
 
     //메세지 객체 함수
     const createMessage = (fileUrl = null) => {
@@ -61,7 +70,7 @@ function MessageForm() {
         return message
     }
 
-    //이미지 버튼을 누르면 파일 열게하는 함수수
+    //이미지 버튼을 누르면 파일 열게하는 함수
     const handleOpenImageRef = () => {
         inputOpenImageRef.current.click(); //참조된 input 을 클릭한것
     }
@@ -158,9 +167,11 @@ function MessageForm() {
     <div>
         <form onSubmit={handleSubmit}>
             <textarea
+                placeholder='메세지 입력'
+                className='message-textarea'
                 style={{
                     width: '100%', height: 90,
-                    border: '0.2rem solid rgb(235,236,236)', borderRadius: 4
+                    borderRadius: 4
                 }}
                 value={content}
                 onChange={handleChange}
@@ -169,7 +180,7 @@ function MessageForm() {
             {/* 퍼센트 바 설정 */}
             {
                 !(percentage === 100) &&
-                <ProgressBar variant='warning' label={`${percentage}%`} now = {percentage} />
+                <ProgressBar className='upload-progress-bar' variant='warning' label={`${percentage}%`} now = {percentage} />
             }
 
             {/* 메세지 요소가 없을 경우 에러 메세지 띄우기 */}

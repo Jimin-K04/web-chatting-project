@@ -24,15 +24,28 @@ function Message({message, user}) {
 
 
   return (
-    <div style={{margin: '16px 0', display: 'flex'}}>
+    <div style={{
+        margin: '16px 0', 
+        display: 'flex',
+        flexDirection: isMessageMine(message, user) ? 'row-reverse' : 'row',
+        alignItems: 'flex-start',
+        
+    }}>
         {/* 메세지 창에서 프로필이미지 */}
         <Image
             roundedCircle
-            style={{width: 40, height: 40, margin: 3}}
+            style={{width: 40, height: 40, margin: 3, border: '2px solid #ddd'}}
             src = {message.user.image}
             alt ={message.user.name}
         />
-    <div style={{marginLeft: 11}}>
+    <div  style={{
+                marginRight : isMessageMine(message, user) ? 10 : 0,
+                marginLeft : isMessageMine(message, user) ? 0 : 10,
+                maxWidth: '60%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: isMessageMine(message, user) ? 'flex-end' : 'flex-start'
+            }}>
 
             {/* 이름 */}
             <h6
@@ -51,12 +64,20 @@ function Message({message, user}) {
             {/* 채팅창 내용 이미지, 텍스트 */}
             { isImage(message) ? 
             <img
-                style={{maxWidth: 300, borderRadius: 10}}
+                style={{maxWidth: 300, borderRadius: 10,  boxShadow: '0 2px 5px rgba(0,0,0,0.1)'}}
                 alt = '이미지'
                 src={message.image}
             />
             :
-            <p>
+            <p style={{
+                backgroundColor: isMessageMine(message, user) ? '#959AF3' : '#f1f1f1',
+                color: isMessageMine(message, user) ? 'white' : '#333',
+                padding: '10px 15px',
+                borderRadius: '18px',
+                margin: 0,
+                maxWidth: '100%',
+                wordBreak: 'break-word',
+                boxShadow: '0 2px 5px rgba(0,0,0,0.1)'}}>
                 {message.content}
             </p>
         }
